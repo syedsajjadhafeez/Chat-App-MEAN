@@ -16,10 +16,10 @@
                   <div class="chat_people">
                     <div class="chat_ib">
                       <h5>
-                        {{ channel }}
+                        {{ channel.name }}
                       </h5>
                       <p>
-                        {{ channel }}
+                        {{ channel.discription }}
                       </p>
                     </div>
                   </div>
@@ -29,20 +29,29 @@
           </div>
           <div class="mesgs">
             <div class="msg_history">
-              <li class="message">
+              <div *ngFor="let message of messages">
+                <div class="message">
                   <div class="incoming_msg">
-                    <div class="incoming_msg_img">
-                    </div>
-                    <div class="received_msg">
+                    <div class="received_msg" >
                       <div class="received_withd_msg">
-                        <p>{{ newMessage }}</p>
+                        <p>{{ message }}</p>
                       </div>
                     </div>
                   </div>
-              </li>
+                </div>
+              </div>
+              <div class="message" *ngFor="let sent_messag of sentMessages">
+                <div class="outgoing_msg">
+                  <div class="sent_msg" >
+                    <div class="received_withd_msg">
+                      <p>{{ sent_messag }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="type_msg">
-              <form class="input_msg_write">
+              <form class="input_msg_write" (ngSubmit)="sendMessages()">
                 <mat-form-field class="input_field_size">
                     <input matInput
                     type="text"
@@ -51,12 +60,13 @@
                     name="newMessage"
                     [(ngModel)]="newMessage"
                     />
-                </mat-form-field>
-                <button class="msg_send_btn" type="button">
-                    <mat-icon>send</mat-icon>
-                </button>
+                  </mat-form-field>
+                    <button mat-button color="primary" class="msg_send_btn">
+                      <mat-icon>send</mat-icon>
+                    </button>
               </form>
             </div>
+
           </div>
         </div>
       </div>

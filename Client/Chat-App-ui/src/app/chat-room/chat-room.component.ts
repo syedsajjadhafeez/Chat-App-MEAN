@@ -7,17 +7,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatRoomComponent implements OnInit {
   title = 'angular-chat';
-  channel = "room1";
+  channel = "room1" ;
   username = 'user1';
   messages = ["hi","what","how","who"] ;
   newMessage = '';
-  channelList = ["channel1","channel3","channel2",]
+  sentMessages = []
+  channelList = [{
+    name:"room1",
+    discription:"asdasdafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfassd"
+  },
+  {
+    name:"room13",
+    discription:"asdasdafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfassd"
+  },
+  {
+    name:"room12",
+    discription:"asdasdafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfassd"
+  }]
 
 
-  
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  sendMessages(){
+
+      this.sentMessages.push(this.newMessage)
+  }
+  recMessage(){
+    this.messages.push(this.newMessage)
+  }
 }
