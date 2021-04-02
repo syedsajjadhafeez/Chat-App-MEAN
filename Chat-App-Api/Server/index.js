@@ -3,12 +3,12 @@ import express from "express";
 import logger from "morgan";
 import cors from "cors";
 // routes
-import indexRouter from "./routes/index.js";
-import userRouter from "./routes/user.js";
-import chatRoomRouter from "./routes/chatRoom.js";
-import deleteRouter from "./routes/delete.js";
+import indexRouter from "./Routes/index.js";
+import userRouter from "./Routes/user.js";
+import chatRoomRouter from "./Routes/chatRoom.js";
+import deleteRouter from "./Routes/delete.js";
 // middlewares
-import { decode } from './middlewares/jwt.js'
+import { decode } from './Middlewares/jwt.js'
 
 const app = express();
 
