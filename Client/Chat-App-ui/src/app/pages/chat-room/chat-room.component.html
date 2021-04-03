@@ -28,7 +28,7 @@
               <div *ngFor="let message of conversation">
                 <div class="message">
                   <div class="incoming_msg">
-                    <div class="received_msg" >
+                    <div class="received_msg" [class.sent_msg]="message.postedByUser.username=== currentUser.username" >
                       <div class="received_withd_msg">
                         <p>{{ message.message.messageText }}</p>
                       </div>
