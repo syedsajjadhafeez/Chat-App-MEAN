@@ -2,6 +2,7 @@
 import makeValidation from '@withvoid/make-validation';
 // models
 import UserModel, { USER_TYPES } from '../models/User.js';
+import { encode } from '../middlewares/jwt.js';
 
 export default {
   onGetAllUsers: async (req, res) => {
@@ -25,6 +26,7 @@ export default {
       const validation = makeValidation(types => ({
         payload: req.body,
         checks: {
+          username:{type: types.string},
           firstName: { type: types.string },
           lastName: { type: types.string },
           type: { type: types.enum, options: { enum: USER_TYPES } },
@@ -32,8 +34,8 @@ export default {
       }));
       if (!validation.success) return res.status(400).json({ ...validation });
 
-      const { firstName, lastName, type } = req.body;
-      const user = await UserModel.createUser(firstName, lastName, type);
+      const { firstName, lastName, type, username } = req.body;
+      const user = await UserModel.createUser(firstName, lastName, type, username);
       return res.status(200).json({ success: true, user });
     } catch (error) {
       return res.status(500).json({ success: false, error: error })
@@ -50,4 +52,13 @@ export default {
       return res.status(500).json({ success: false, error: error })
     }
   },
+  onLoginUser: async (req, res) => {
+    try {
+      const { username } = req.body;
+      const user = await UserModel.loginUser(username);
+      return res.status(200).json({ success: true, user, authorization: req.authToken });
+    } catch (error) {
+      return res.status(500).json({ success: false, error: error })
+    }
+  }
 }

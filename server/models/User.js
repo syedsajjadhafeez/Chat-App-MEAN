@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: () => uuidv4().replace(/\-/g, ""),
     },
+    username:String,
     firstName: String,
     lastName: String,
     type: String,
@@ -27,10 +28,12 @@ const userSchema = new mongoose.Schema(
  * @param {String} lastName
  * @returns {Object} new user object created
  */
-userSchema.statics.createUser = async function (firstName, lastName, type) {
+userSchema.statics.createUser = async function (firstName, lastName, type, username) {
   try {
-    const user = await this.create({ firstName, lastName, type });
-    return user;
+    const user = await this.findOne({ username });
+    if (user) throw ({ error: 'User already exist' });
+    const newuser = await this.create({ username, firstName, lastName, type });
+    return newuser;
   } catch (error) {
     throw error;
   }
@@ -83,6 +86,20 @@ userSchema.statics.deleteByUserById = async function (id) {
   try {
     const result = await this.remove({ _id: id });
     return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * @param {String} id, user id
+ * @return {Object} User profile object
+ */
+ userSchema.statics.loginUser = async function (username) {
+  try {
+    const user = await this.findOne({ username: username });
+    if (!user) throw ({ error: 'No user with this username found' });
+    return user;
   } catch (error) {
     throw error;
   }

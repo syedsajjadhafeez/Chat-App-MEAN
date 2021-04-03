@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user';
 import { config } from 'src/environments/environment';
 
@@ -14,7 +14,18 @@ import { config } from 'src/environments/environment';
 })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+  __currentUser__: BehaviorSubject<User>;
+
+  constructor(private http: HttpClient) {
+    this.__currentUser__ = new BehaviorSubject<User>(null)
+   }
+
+  get currentUser():User{
+    return this.__currentUser__.value;
+  }
+  set currentUser(value:User){
+    this.__currentUser__.next(value);
+  }
   
   /**
    * Fetches user

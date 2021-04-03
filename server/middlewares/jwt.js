@@ -6,10 +6,11 @@ const SECRET_KEY = 'some-secret-key';
 
 export const encode = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const user = await UserModel.getUserById(userId);
+    const { username } = req.body;
+    const user = await UserModel.loginUser(username);
     const payload = {
       userId: user._id,
+      username: user.username,
       userType: user.type,
     };
     const authToken = jwt.sign(payload, SECRET_KEY);

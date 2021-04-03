@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/models/user';
+import { ChatService } from 'src/app/services/chat.service';
+import { SocketService } from 'src/app/services/socket.service';
+import { UserService } from 'src/app/services/user.service';
+
 
 @Component({
   selector: 'app-chat-room',
@@ -6,31 +11,64 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-room.component.css']
 })
 export class ChatRoomComponent implements OnInit {
-  title = 'angular-chat';
-  channel = "room1" ;
-  username = 'user1';
-  messages = ["hi","what","how","who"] ;
-  newMessage = '';
-  sentMessages = []
-  selectedRoom; 
-  channelList = [{
-    name:"room1",
-    discription:"asdasdafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfassd"
-  },
-  {
-    name:"room13",
-    discription:"asdasdafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfassd"
-  },
-  {
-    name:"room12",
-    discription:"asdasdafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfassd-------------------------------"
-  }]
 
-
-  constructor() { }
+  allUsers =[];
+  currentUser:User;
+  conversation=[];
+  currentUserMessage:string = '';
+  currentRoomId='';
+  constructor(private userService: UserService, 
+    private chatService:ChatService,
+    private socketService: SocketService) { }
 
   ngOnInit(): void {
+    this.initData();
   }
 
- 
+  initData(){
+    this.userService.__currentUser__.subscribe(user=>this.currentUser=user);
+    this.getAllUsers();
+  }
+
+  getAllUsers(){
+    this.userService.getAllUsers().subscribe(usres=> {
+      this.allUsers=(usres.success)?
+      usres.users.filer(user=>user.username!= this.currentUser.username)
+      :[]
+    });
+  }
+
+
+  startChat(userId:string){
+    let data= {userIds: [userId], type:'consumer-to-consumer'};
+    this.chatService.initiateChat(data).subscribe(response=>{
+      console.log(response)
+      if(response.success && response.chatRoom.chatRoomId){
+        this.currentRoomId = response.chatRoom.chatRoomId 
+        this.getConversation();
+       // this.socketService.listenMessages(this.currentRoomId);
+      }
+    });
+  }
+
+  getRecentChats(){
+    this.chatService.getRecentConversation().subscribe(response=>console.log(response))
+  }
+  
+  getConversation(){
+    this.chatService.getConversationForRoom(this.currentRoomId,0,0).subscribe(response=>this.conversation = response.conversation)
+  }
+
+  sendMessage(){
+    if(this.currentUserMessage==='') return;
+
+    let messageDetails= {
+      "messageText":this.currentUserMessage
+    };
+    this.chatService.postMessage(this.currentRoomId,messageDetails).subscribe(response=>
+      {this.currentRoomId=''}
+    );
+  }
+
 }
+

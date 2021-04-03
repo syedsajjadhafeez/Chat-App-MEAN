@@ -11,10 +11,15 @@ export class AuthService {
 
   /**
    *  Authorizes user
-   * @param userId : uuid
+   * @param username: uuid
    * @returns {Observable<any>}
    */
-  login(userId): Observable<any>{
-    return this.http.get(`${config.BASE_URL}login/${userId}`);
+  login(username): Observable<any>{
+    return this.http.post(`${config.BASE_URL}users/login`,{username});
   }
+
+  getAuthToken(){
+   return localStorage.getItem('token')?localStorage.getItem('token'):'';
+  }
+
 }

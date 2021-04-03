@@ -1,26 +1,22 @@
 <div class="content" role="main">
   
-    <div *ngIf="channel" class="container">
-      <h3 class=" text-center">Stream Messaging</h3>
+    <div class="container">
       <div class="messaging">
         <div class="inbox_msg">
           <div class="inbox_people">
             <div class="headind_srch">
               <div class="channel_heading">
-                <h4>Channels</h4>
+                <h4>Users</h4>
               </div>
             </div>
             <div class="inbox_chat">
-              <div class="channels" *ngFor="let channel of channelList">
-                <div class="chat_list" (click)="slectedroom()" >
-                  <div class="chat_people">
+              <div class="channels" *ngFor="let user of allUsers">
+                <div class="chat_list">
+                  <div class="chat_people" (click)="startChat(user._id)">
                     <div class="chat_ib">
                       <h5>
-                        {{ channel.name }}
+                        {{ user.firstName }} {{ user.lastName }}
                       </h5>
-                      <p>
-                        {{ channel.discription }}
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -29,18 +25,18 @@
           </div>
           <div class="mesgs">
             <div class="msg_history">
-              <div *ngFor="let message of messages">
+              <div *ngFor="let message of conversation">
                 <div class="message">
                   <div class="incoming_msg">
                     <div class="received_msg" >
                       <div class="received_withd_msg">
-                        <p>{{ message }}</p>
+                        <p>{{ message.message.messageText }}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="message" *ngFor="let sent_messag of sentMessages">
+              <!-- <div class="message" *ngFor="let sent_messag of sentMessages">
                 <div class="outgoing_msg">
                   <div class="sent_msg" >
                     <div class="received_withd_msg">
@@ -48,20 +44,21 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <div class="type_msg">
-              <form class="input_msg_write" (ngSubmit)="sendMessages()">
+              <form class="input_msg_write">
                 <mat-form-field class="input_field_size">
                     <input matInput
                     type="text"
                     class="write_msg"
                     placeholder="Type a message"
                     name="newMessage"
-                    [(ngModel)]="newMessage"
+                    [(ngModel)] = "currentUserMessage"
+                    autocomplete="false"
                     />
                   </mat-form-field>
-                    <button mat-button color="primary" class="msg_send_btn">
+                    <button mat-button color="primary" (click)="sendMessage()" class="msg_send_btn">
                       <mat-icon>send</mat-icon>
                     </button>
               </form>

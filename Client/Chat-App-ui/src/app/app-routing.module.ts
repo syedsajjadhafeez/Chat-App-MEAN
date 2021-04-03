@@ -4,13 +4,13 @@ import { CommonModule } from '@angular/common';
 import { ChatRoomComponent } from './pages/chat-room/chat-room.component'
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { AuthGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
-  { path:'', component: LoginComponent},
-  { path: 'login', component: LoginComponent},
+  { path:'', component: ChatRoomComponent, canActivate: [AuthGuard]},
   { path:'signup', component: SignupComponent},
-  { path: 'inbox', component: ChatRoomComponent }
+  { path: 'login', component: LoginComponent }
 
 ];
 
