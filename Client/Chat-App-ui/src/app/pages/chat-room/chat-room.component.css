@@ -108,17 +108,23 @@ img {
 .chat_people {
   overflow: hidden;
   clear: both;
+  padding: 3px;
 }
 
 .chat_list {
-  border-bottom: 1px solid #c4c4c4;
-  margin: 0;
+  background: rgb(237, 237, 237);
+  border-radius: 20px;
+  margin: 10px;
   padding: 18px 16px 10px;
+  cursor: pointer;
+  
+}
+.chat_list :hover{
+  background-color:#ebebeb;
 }
 
 .inbox_chat {
   height: 550px;
-  overflow-y: scroll;
 }
 
 .active_chat {
@@ -220,3 +226,4 @@ img {
 .input_field_size {
   width: 90%;
 }
+

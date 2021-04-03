@@ -12,6 +12,7 @@ export class ChatRoomComponent implements OnInit {
   messages = ["hi","what","how","who"] ;
   newMessage = '';
   sentMessages = []
+  selectedRoom; 
   channelList = [{
     name:"room1",
     discription:"asdasdafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfassd"
@@ -22,7 +23,7 @@ export class ChatRoomComponent implements OnInit {
   },
   {
     name:"room12",
-    discription:"asdasdafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfassd"
+    discription:"asdasdafasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfassd-------------------------------"
   }]
 
 
@@ -31,11 +32,5 @@ export class ChatRoomComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  sendMessages(){
-
-      this.sentMessages.push(this.newMessage)
-  }
-  recMessage(){
-    this.messages.push(this.newMessage)
-  }
+ 
 }

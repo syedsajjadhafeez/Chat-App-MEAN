@@ -12,7 +12,7 @@
             </div>
             <div class="inbox_chat">
               <div class="channels" *ngFor="let channel of channelList">
-                <div class="chat_list">
+                <div class="chat_list" (click)="slectedroom()" >
                   <div class="chat_people">
                     <div class="chat_ib">
                       <h5>
