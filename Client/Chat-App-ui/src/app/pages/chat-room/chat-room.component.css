@@ -25,7 +25,7 @@ img {
 }
 
 .inbox_msg {
-  border: 1px solid #c4c4c4;
+  /* border: 1px solid #c4c4c4; */
   clear: both;
   overflow: hidden;
 }
