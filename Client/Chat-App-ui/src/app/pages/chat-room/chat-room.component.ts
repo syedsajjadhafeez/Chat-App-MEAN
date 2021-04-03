@@ -32,9 +32,10 @@ export class ChatRoomComponent implements OnInit {
 
   getAllUsers(){
     this.userService.getAllUsers().subscribe(usres=> {
-      this.allUsers=(usres.success)?
-      usres.users.filer(user=>user.username!= this.currentUser.username)
-      :[]
+      if(usres.success){
+        let users = usres.users.filter(user=> user.username != this.currentUser.username)
+        this.allUsers= users;
+      }
     });
   }
 
@@ -65,8 +66,8 @@ export class ChatRoomComponent implements OnInit {
     let messageDetails= {
       "messageText":this.currentUserMessage
     };
-    this.chatService.postMessage(this.currentRoomId,messageDetails).subscribe(response=>
-      {this.currentRoomId=''}
+    this.chatService.postMessage(this.currentRoomId,messageDetails).subscribe(response=>{
+      this.currentUserMessage=''}
     );
   }
 
