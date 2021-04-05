@@ -48,7 +48,8 @@ export class ChatRoomComponent implements OnInit {
       if(response.success && response.chatRoom.chatRoomId){
         this.currentRoomId = response.chatRoom.chatRoomId 
         this.getConversation();
-       this.socketService.listenMessages(this.currentRoomId,()=>{this.getConversation()});
+        this.socketService.listenMessages(this.currentRoomId,()=>{this.getConversation()});
+        this.scrollToBottom();
       }
     });
   }
@@ -62,14 +63,10 @@ export class ChatRoomComponent implements OnInit {
   getRecentChats(){
     this.chatService.getRecentConversation().subscribe(response=>console.log(response))
     this.scrollToBottom();
-
   }
   
   getConversation(){
     this.chatService.getConversationForRoom(this.currentRoomId,200,0).subscribe(response=>this.conversation = response.conversation)
-    setTimeout(() => {
-      this.scrollToBottom();
-    }, 500);
   }
 
   sendMessage(){
@@ -81,19 +78,23 @@ export class ChatRoomComponent implements OnInit {
     this.chatService.postMessage(this.currentRoomId,messageDetails).subscribe(response=>{
       this.currentUserMessage=''}
     );
-    this.scrollToBottom();
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 200);  
+    
   }
 
+  
+  scrollToBottom() :void{
+    try {
+      setTimeout(() => {
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+      }, 500);
+  } catch(err) { }                 
+  }
+  
   ngOnDestroy() {
     this.socketService.removeListener(this.currentRoomId)
   }
-
-  scrollToBottom() :void{
-    try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-  } catch(err) { }                 
-
-  }
-
 }
 
