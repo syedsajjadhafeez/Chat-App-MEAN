@@ -47,9 +47,15 @@ export class ChatRoomComponent implements OnInit {
       if(response.success && response.chatRoom.chatRoomId){
         this.currentRoomId = response.chatRoom.chatRoomId 
         this.getConversation();
-       // this.socketService.listenMessages(this.currentRoomId);
+       this.socketService.listenMessages(this.currentRoomId,()=>{this.getConversation()});
       }
     });
+  }
+
+  onNewMessage(){
+    this.getConversation();
+    console.log('loading messages');
+    
   }
 
   getRecentChats(){
@@ -57,7 +63,7 @@ export class ChatRoomComponent implements OnInit {
   }
   
   getConversation(){
-    this.chatService.getConversationForRoom(this.currentRoomId,0,0).subscribe(response=>this.conversation = response.conversation)
+    this.chatService.getConversationForRoom(this.currentRoomId,8,0).subscribe(response=>this.conversation = response.conversation)
   }
 
   sendMessage(){
@@ -71,6 +77,9 @@ export class ChatRoomComponent implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    this.socketService.removeListener(this.currentRoomId)
+  }
 
 }
 

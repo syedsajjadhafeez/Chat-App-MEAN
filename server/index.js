@@ -43,7 +43,7 @@ app.use('*', (req, res) => {
 const server = http.createServer(app);
 /** Create socket connection */
 global.io = socketio.listen(server);
-global.io.on('connection', WebSockets.connection)
+global.io.on('connection', (WebSockets.connection))
 /** Listen on provided port, on all network interfaces. */
 server.listen(port);
 /** Event listener for HTTP server "listening" event. */

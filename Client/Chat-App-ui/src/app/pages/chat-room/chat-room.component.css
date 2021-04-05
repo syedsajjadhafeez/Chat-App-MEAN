@@ -166,9 +166,10 @@ img {
 }
 
 .mesgs {
-  float: left;
+  /* float: left; */
   padding: 30px 15px 0 25px;
-  width: 55%;
+  /* width: 55%; */
+  overflow-y: scroll;
 }
 
 .sent_msg p {
