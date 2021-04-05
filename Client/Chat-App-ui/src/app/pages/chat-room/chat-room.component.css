@@ -219,7 +219,11 @@ img {
 
 .msg_history {
   height: 516px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.msg_history ::-webkit-scrollbar{
+  display: none;
 }
 
 .message {

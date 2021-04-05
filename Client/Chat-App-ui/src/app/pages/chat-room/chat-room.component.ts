@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef ,ViewChild } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { ChatService } from 'src/app/services/chat.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./chat-room.component.css']
 })
 export class ChatRoomComponent implements OnInit {
+  @ViewChild('scrollToBottom') private myScrollContainer: ElementRef;
 
   allUsers =[];
   currentUser:User;
@@ -60,10 +61,15 @@ export class ChatRoomComponent implements OnInit {
 
   getRecentChats(){
     this.chatService.getRecentConversation().subscribe(response=>console.log(response))
+    this.scrollToBottom();
+
   }
   
   getConversation(){
-    this.chatService.getConversationForRoom(this.currentRoomId,8,0).subscribe(response=>this.conversation = response.conversation)
+    this.chatService.getConversationForRoom(this.currentRoomId,200,0).subscribe(response=>this.conversation = response.conversation)
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   sendMessage(){
@@ -75,10 +81,18 @@ export class ChatRoomComponent implements OnInit {
     this.chatService.postMessage(this.currentRoomId,messageDetails).subscribe(response=>{
       this.currentUserMessage=''}
     );
+    this.scrollToBottom();
   }
 
   ngOnDestroy() {
     this.socketService.removeListener(this.currentRoomId)
+  }
+
+  scrollToBottom() :void{
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+  } catch(err) { }                 
+
   }
 
 }

@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="mesgs" *ngIf="currentRoomId!==''">
-            <div class="msg_history">
+            <div #scrollToBottom class="msg_history">
               <div *ngFor="let message of conversation">
                 <div class="message">
                   <div class="incoming_msg">
